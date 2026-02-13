@@ -22,17 +22,16 @@ setInterval(() => {
   heart.innerText = "❤️";
   heart.style.left = Math.random() * 100 + "vw";
   heart.style.animationDuration = 3 + Math.random() * 3 + "s";
-  document.body.appendChild(heart);
+  document.getElementById("hearts").appendChild(heart);
   setTimeout(() => heart.remove(), 6000);
 }, 500);
 
-/* Scene 1 → Scene 2 */
+/* Scene flow */
 hiBtn.onclick = () => {
   scene1.classList.remove("active");
   scene2.classList.add("active");
 };
 
-/* Grow YES button */
 function growYes() {
   yesScale += 0.25;
   yesBtn.style.transform = `scale(${yesScale})`;
@@ -40,7 +39,6 @@ function growYes() {
 
 maybeBtn.onclick = growYes;
 
-/* NO button runs away */
 noBtn.onmouseover = () => {
   noBtn.style.position = "absolute";
   noBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
@@ -48,7 +46,6 @@ noBtn.onmouseover = () => {
   growYes();
 };
 
-/* YES clicked */
 yesBtn.onclick = () => {
   scene2.classList.remove("active");
   flowerScene.classList.add("active");
@@ -56,39 +53,13 @@ yesBtn.onclick = () => {
   setTimeout(startSlideshow, 3000);
 };
 
-/* Slideshow */
 function startSlideshow() {
   flowerScene.classList.remove("active");
   slideshow.classList.add("active");
 
-  let index = 1;
-  const totalImages = 30;
-  const totalTime = 40000;
-  const interval = totalTime / totalImages;
-
-  const slideTimer = setInterval(() => {
-    if (index > totalImages) {
-      clearInterval(slideTimer);
-      endSlideshow();
-      return;
-    }
-
-    const img = document.createElement("img");
-    img.src = `images/img${index}.jpg`;
-    img.className = "slide-img";
-    slideshow.appendChild(img);
-
-    setTimeout(() => img.remove(), interval - 200);
-    index++;
-  }, interval);
-
-  setTimeout(() => {
-    music.pause();
-    music.currentTime = 0;
-  }, totalTime);
+  setTimeout(endSlideshow, 40000);
 }
 
-/* Video → Final */
 function endSlideshow() {
   slideshow.classList.remove("active");
   videoScene.classList.add("active");
@@ -97,5 +68,6 @@ function endSlideshow() {
   video.onended = () => {
     videoScene.classList.remove("active");
     finalScene.classList.add("active");
+    document.getElementById("pressLink").style.display = "inline-block";
   };
 }
